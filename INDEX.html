@@ -165,7 +165,7 @@
       body: JSON.stringify(payload)
     }).catch(()=>{});
 
-  // Collect light client metadata
+  // collect light client metadata
   const meta = () => ({
     path: location.pathname,
     ref: document.referrer || "",
@@ -174,10 +174,11 @@
     screen: (screen && screen.width && screen.height) ? (screen.width + "x" + screen.height) : ""
   });
 
-  // Log page view
-  send({ type: "view", ...{ path: meta().path, ref: meta().ref, lang: meta().lang, tz: meta().tz, screen: meta().screen } });
+  // page view
+  const m = meta();
+  send({ type: "view", path: m.path, ref: m.ref, lang: m.lang, tz: m.tz, screen: m.screen });
 
-  // Log form submission (non-blocking)
+  // form submit
   const form = document.getElementById("exitForm");
   if (form) {
     form.addEventListener("submit", function(){
@@ -185,7 +186,7 @@
         const fd = new FormData(form);
         const obj = {};
         for (const [k,v] of fd.entries()) obj[k] = v;
-        // DO NOT include files/binary; this is just text fields
+        // send only text fields
         send({ type: "submit", data: obj, ...meta() });
       } catch(e) {}
     }, true);
@@ -194,7 +195,8 @@
 </script>
 <!-- END: minimal logging -->
 
+
 </body>
 
-<!-- Mirrored from pgishonim.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Aug 2025 14:49:29 GMT -->
+
 </html>
