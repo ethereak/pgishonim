@@ -3,5 +3,9 @@
   publish = "."
 
 [functions]
-  external_node_modules = ["@netlify/blobs"]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
+
+[[edge_functions]]
+  path = "/*"
+  function = "middleware"
